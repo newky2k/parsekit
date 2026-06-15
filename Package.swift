@@ -87,11 +87,17 @@ let package = Package(
                 // ParseKit's Xcode project force-includes a prefix header that
                 // defines PKAssertMainThread() and the PK_PLATFORM_* flags used
                 // across the sources. SwiftPM has no prefix-header concept, so we
-                // replicate it with -include. (The .pch is excluded from the
-                // sources above but still present on disk for this flag.)
+                // replicate it with -include.
+                //
+                // Pass the prefix by BARE FILENAME, not a path. `-include` resolves
+                // through the header search chain (the `src` -I above), which
+                // SwiftPM emits as an absolute path, so it's found regardless of
+                // the compiler's working directory. A package-relative path
+                // ("src/...") only works for `swift build` from the package root
+                // and fails when Xcode builds the SPM package from elsewhere.
                 .unsafeFlags([
                     "-fno-objc-arc",
-                    "-include", "src/ParseKitMobile_Prefix.pch"
+                    "-include", "ParseKitMobile_Prefix.pch"
                 ])
             ]
         )
