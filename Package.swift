@@ -97,7 +97,13 @@ let package = Package(
                 // and fails when Xcode builds the SPM package from elsewhere.
                 .unsafeFlags([
                     "-fno-objc-arc",
-                    "-include", "ParseKitMobile_Prefix.pch"
+                    "-include", "ParseKitMobile_Prefix.pch",
+                    // Silence "umbrella header does not include header X" for the
+                    // few public headers ParseKit.h omits (PKAST/PKHashtagState/
+                    // PKTwitterState). They are peripheral/feature-gated and not
+                    // part of the consumed API; this avoids editing ParseKit's
+                    // own umbrella header so the fork stays clean against upstream.
+                    "-Wno-incomplete-umbrella"
                 ])
             ]
         )
