@@ -98,4 +98,9 @@
 #import <ParseKit/PKSParser.h>
 #import <ParseKit/PKSTokenAssembly.h>
 #import <ParseKit/PKSRecognitionException.h>
+#import <ParseKit/PKAST.h>
+
+// platform-gated states (complete the umbrella for the Clang module)
+#import <ParseKit/PKHashtagState.h>
+#import <ParseKit/PKTwitterState.h>
 
